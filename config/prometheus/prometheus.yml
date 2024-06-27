@@ -9,14 +9,14 @@ global:
 # A scrape configuration containing exactly one endpoint to scrape:
 # Here it's Prometheus itself.
 scrape_configs:
+
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-  - job_name: 'prometheus'
+  - job_name: 'server'
 
     # Override the global default and scrape targets from this job every 5 seconds.
-    scrape_interval: 30s
-    scrape_timeout: 25s
-
+    scrape_interval: 5s
+    scrape_timeout: 2s
     static_configs:
-      - targets: ['presentation:5000']
+      - targets: ['presentation:5000'] #, '10.1.1.2:17871'] # , '10.1.1.16:9100']
         labels:
-          group: 'Home network'
+          group: 'server'

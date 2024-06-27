@@ -1,102 +1,93 @@
-# Docker compose file for netprobe
-# https://github.com/plaintextpackets/netprobe_lite
-name: netprobe
 
 networks:
   netprobe-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.1.0/24
 
 services:
+  coredns:
+    container_name: coredns
+    image: coredns/coredns:latest
+    volumes:
+      - ./config/coredns/Corefile:/home/nonroot/Corefile:ro
+    ports:
+      - 5533:53/udp
+    networks:
+      - netprobe-net
+
   redis:
     restart: always
-    container_name: netprobe-redis
+    container_name: redis
     image: "redis:latest"
     volumes:
       - ./config/redis/redis.conf:/etc/redis/redis.conf
     networks:
-      - netprobe-net
-    dns:
-      - 8.8.8.8
-      - 8.8.4.4      
+      - netprobe-net  # Attach to the custom network
 
   netprobe:
     restart: always
     container_name: netprobe-probe
-    image: "plaintextpackets/netprobe:latest"
-    pull_policy: always
+    build: .
     volumes:
       - .:/netprobe_lite
     environment:
       MODULE: "NETPROBE"
     networks:
-      - netprobe-net
-    dns:
-      - 8.8.8.8
-      - 8.8.4.4      
-
-  speedtest:
-    restart: always
-    container_name: netprobe-speedtest
-    image: "plaintextpackets/netprobe:latest"
-    pull_policy: always
-    volumes:
-      - .:/netprobe_lite
-    environment:
-      MODULE: "SPEEDTEST"
-    networks:
-      - netprobe-net
-    dns:
-      - 8.8.8.8
-      - 8.8.4.4      
+      - netprobe-net  # Attach to the custom network
 
   presentation:
     restart: always
     container_name: netprobe-presentation
-    image: "plaintextpackets/netprobe:latest"
-    pull_policy: always
+    build: .
     volumes:
       - .:/netprobe_lite
     environment:
       MODULE: "PRESENTATION"
     networks:
-      - netprobe-net
-    dns:
-      - 8.8.8.8
-      - 8.8.4.4      
+      - netprobe-net  # Attach to the custom network
 
   prometheus:
     restart: always
-    container_name: netprobe-prometheus
+    container_name: prometheus
     image: "prom/prometheus"
     volumes:
       - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - prometheus_data:/prometheus  # Persistent local storage for Prometheus data
+      - ./config/prometheus/prometheus-storage/_data:/prometheus
+    ports:
+      - '9090:9090'
+    networks:
+      - netprobe-net  # Attach to the custom network
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
-    networks:
-      - netprobe-net
-    dns:
-      - 8.8.8.8
-      - 8.8.4.4      
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+      - '--storage.tsdb.retention.time=365d'
 
   grafana:
+    user: "0"
     restart: always
-    image: grafana/grafana-enterprise
-    container_name: netprobe-grafana
+    image: "grafana/grafana-enterprise"
+    container_name: grafana
     volumes:
       - ./config/grafana/datasources/automatic.yml:/etc/grafana/provisioning/datasources/automatic.yml
       - ./config/grafana/dashboards/main.yml:/etc/grafana/provisioning/dashboards/main.yml
       - ./config/grafana/dashboards/netprobe.json:/var/lib/grafana/dashboards/netprobe.json
-      - grafana_data:/var/lib/grafana
+      - ./config/grafana/grafana-storage:/var/lib/grafana
     ports:
-      - '3001:3000'
+      - '3000:3000'
+    networks:
+      - netprobe-net  # Attach to the custom network
+
+  loki:
+    restart: always
+    image: grafana/loki
+    container_name: loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
     networks:
       - netprobe-net
-    dns:
-      - 8.8.8.8
-      - 8.8.4.4      
-      
-volumes:
-  prometheus_data:
-  grafana_data:
-  

@@ -1,3 +1,11 @@
+# changes made by me
+- renamed containers
+- added loki and coredns 
+- persistent storage for grafana, loki, prometheus (in ./config/)
+- checks youtube, github and google for ping
+- uses /24 subnet
+- increased prometheus retention to 365 days
+
 # Netprobe
 
 Simple and effective tool for measuring ISP performance at home. The tool measures several performance metrics including packet loss, latency, jitter, and DNS performance. It also has an optional speed test to measure bandwidth. Netprobe aggregates these metrics into a common score, which you can use to monitor overall health of your internet connection.
