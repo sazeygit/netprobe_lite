@@ -57,7 +57,7 @@ class NetworkCollector(object): # Main network collection class
             if nameserver == 'My_DNS_Server':
                 my_resolver.port = 53535
             else:
-                my_resolver.port = 53
+                my_resolver.port = 6969
 
             answers = my_resolver.query(site,'A')
 
