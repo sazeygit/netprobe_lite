@@ -5,6 +5,7 @@
 - checks youtube, github and google for ping
 - uses /24 subnet
 - increased prometheus retention to 365 days
+- exposed loki/grafana/prometheus ports
 
 # Netprobe
 
@@ -44,7 +45,7 @@ git clone https://github.com/plaintextpackets/netprobe_lite.git
 2. From the cloned folder, use docker compose to launch the app:
 
 ```
-docker compose up
+docker compose up --detach
 ```
 
 3. To shut down the app, use docker compose again:
