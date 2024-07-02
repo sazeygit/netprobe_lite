@@ -1,6 +1,9 @@
 
 tester.py
 
+config/grafana/grafana-storage/
+config/prometheus/prometheus-storage/
+
 # Distribution / packaging
 .Python
 build/
