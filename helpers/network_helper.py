@@ -49,7 +49,7 @@ class NetworkCollector(object): # Main network collection class
         server = [] # Resolver needs a list
         server.append(nameserver[1])
 
-        if item['nameserver'] == 'My_DNS_Server':
+        if server['nameserver'] == 'My_DNS_Server':
             my_resolver.port = 53535
         else:
             my_resolver.port = 53
