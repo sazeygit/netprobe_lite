@@ -1,10 +1,10 @@
 
-networks:
-  netprobe-net:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.21.1.0/24
+# networks:
+#   netprobe-net:
+#     driver: bridge
+#     ipam:
+#       config:
+#         - subnet: 172.21.1.0/24
 
 services:
   coredns:
