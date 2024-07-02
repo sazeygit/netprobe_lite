@@ -54,7 +54,7 @@ class NetworkCollector(object): # Main network collection class
             my_resolver.nameservers = server
             my_resolver.timeout = 10
 
-            if server['nameserver'] == 'My_DNS_Server':
+            if nameserver == 'My_DNS_Server':
                 my_resolver.port = 53535
             else:
                 my_resolver.port = 53
