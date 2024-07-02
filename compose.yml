@@ -1,21 +1,21 @@
 
 networks:
-  netprobe-net:
+  netprobe-test:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.21.1.0/24
+        - subnet: 172.21.3.0/24
 
 services:
-  coredns:
-    container_name: coredns
-    image: coredns/coredns:latest
-    volumes:
-      - ./config/coredns/Corefile:/home/nonroot/Corefile:ro
-    ports:
-      - 5533:53/udp
-    networks:
-      - netprobe-net
+  # coredns:
+  #   container_name: coredns
+  #   image: coredns/coredns:latest
+  #   volumes:
+  #     - ./config/coredns/Corefile:/home/nonroot/Corefile:ro
+  #   ports:
+  #     - 5533:53/udp
+  #   networks:
+  #     - netprobe-test
 
   redis:
     restart: always
@@ -24,7 +24,7 @@ services:
     volumes:
       - ./config/redis/redis.conf:/etc/redis/redis.conf
     networks:
-      - netprobe-net  # Attach to the custom network
+      - netprobe-test  # Attach to the custom network
 
   netprobe:
     restart: always
@@ -35,7 +35,7 @@ services:
     environment:
       MODULE: "NETPROBE"
     networks:
-      - netprobe-net  # Attach to the custom network
+      - netprobe-test  # Attach to the custom network
 
   presentation:
     restart: always
@@ -46,7 +46,7 @@ services:
     environment:
       MODULE: "PRESENTATION"
     networks:
-      - netprobe-net  # Attach to the custom network
+      - netprobe-test  # Attach to the custom network
 
   prometheus:
     restart: always
@@ -55,10 +55,10 @@ services:
     volumes:
       - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./config/prometheus/prometheus-storage/_data:/prometheus
-    ports:
-      - '9090:9090'
+    # ports:
+    #   - '9090:9090'
     networks:
-      - netprobe-net  # Attach to the custom network
+      - netprobe-test  # Attach to the custom network
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
@@ -78,16 +78,16 @@ services:
       - ./config/grafana/dashboards/netprobe.json:/var/lib/grafana/dashboards/netprobe.json
       - ./config/grafana/grafana-storage:/var/lib/grafana
     ports:
-      - '3000:3000'
+      - '3001:3000'
     networks:
-      - netprobe-net  # Attach to the custom network
+      - netprobe-test  # Attach to the custom network
 
-  loki:
-    restart: always
-    image: grafana/loki
-    container_name: loki
-    ports:
-      - "3100:3100"
-    command: -config.file=/etc/loki/local-config.yaml
-    networks:
-      - netprobe-net
+  # loki:
+  #   restart: always
+  #   image: grafana/loki
+  #   container_name: loki
+  #   ports:
+  #     - "3100:3100"
+  #   command: -config.file=/etc/loki/local-config.yaml
+  #   networks:
+  #     - netprobe-test
