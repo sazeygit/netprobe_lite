@@ -49,15 +49,17 @@ class NetworkCollector(object): # Main network collection class
         server = [] # Resolver needs a list
         server.append(nameserver[1])
 
+        my_resolver.nameserver_ports = {"10.1.1.2": 53}
+
         try:
 
             my_resolver.nameservers = server
             my_resolver.timeout = 10
 
-            if nameserver == 'My_DNS_Server':
-                my_resolver.port = 53535
-            else:
-                my_resolver.port = 696
+            # if nameserver == 'My_DNS_Server':
+            #     my_resolver.port = 53535
+            # else:
+            #     my_resolver.port = 53
 
             answers = my_resolver.query(site,'A')
 
