@@ -8,7 +8,7 @@ import speedtest
 
 class NetworkCollector(object): # Main network collection class
 
-    def __init__(self,sites,count,dns_test_site,nameservers_external,dns_port):
+    def __init__(self,sites,count,dns_test_site,nameservers_external):
         self.sites = sites # List of sites to ping
         self.count = str(count) # Number of pings
         self.stats = [] # List of stat dicts
