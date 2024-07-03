@@ -49,7 +49,7 @@ class NetworkCollector(object): # Main network collection class
         server = [] # Resolver needs a list
         server.append(nameserver[1])
 
-        my_resolver.nameserver_ports = {"10.1.1.2": 5353}
+        my_resolver.nameserver_ports = {"10.1.1.2": 53535}
 
         try:
 
