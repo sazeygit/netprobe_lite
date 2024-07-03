@@ -16,7 +16,7 @@ class NetworkCollector(object): # Main network collection class
         self.dns_test_site = dns_test_site # Site used to test DNS response times
         self.nameservers = []
         self.nameservers = nameservers_external
-        self.dnsport = dns_port
+        self.dns_port = dns_port
 
     def pingtest(self,count,site):
 
@@ -50,17 +50,12 @@ class NetworkCollector(object): # Main network collection class
         server.append(nameserver[1])
 
         # custom port mapping
-        my_resolver.nameserver_ports = {"10.1.1.2": dnsport}
+        my_resolver.nameserver_ports = {"10.1.1.2": dns_port}
 
         try:
 
             my_resolver.nameservers = server
             my_resolver.timeout = 10
-
-            # if nameserver == 'My_DNS_Server':
-            #     my_resolver.port = 53535
-            # else:
-            #     my_resolver.port = 53
 
             answers = my_resolver.query(site,'A')
 
