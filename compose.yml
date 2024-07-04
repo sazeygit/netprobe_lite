@@ -1,56 +1,56 @@
 
 networks:
-  netprobe-test:
+  netprobe:
     driver: bridge
     ipam:
       config:
         - subnet: 172.21.3.0/24
 
 services:
-  # coredns:
-  #   container_name: coredns
-  #   image: coredns/coredns:latest
-  #   volumes:
-  #     - ./config/coredns/Corefile:/home/nonroot/Corefile:ro
-  #   ports:
-  #     - 5533:53/udp
-  #   networks:
-  #     - netprobe-test
+  coredns:
+    container_name: coredns
+    image: coredns/coredns:latest
+    volumes:
+      - ./config/coredns/Corefile:/home/nonroot/Corefile:ro
+    ports:
+      - 5533:53/udp
+    networks:
+      - netprobe
 
   redis:
     restart: always
-    container_name: redis-test
+    container_name: redis
     image: "redis:latest"
     volumes:
       - ./config/redis/redis.conf:/etc/redis/redis.conf
     networks:
-      - netprobe-test  # Attach to the custom network
+      - netprobe  # Attach to the custom network
 
   netprobe:
     restart: always
-    container_name: netprobe-probe-test
+    container_name: netprobe-probe
     build: .
     volumes:
       - .:/netprobe_lite
     environment:
       MODULE: "NETPROBE"
     networks:
-      - netprobe-test  # Attach to the custom network
+      - netprobe  # Attach to the custom network
 
   presentation:
     restart: always
-    container_name: netprobe-presentation-test
+    container_name: netprobe-presentation
     build: .
     volumes:
       - .:/netprobe_lite
     environment:
       MODULE: "PRESENTATION"
     networks:
-      - netprobe-test  # Attach to the custom network
+      - netprobe  # Attach to the custom network
 
   prometheus:
     restart: always
-    container_name: prometheus-test
+    container_name: prometheus
     image: "prom/prometheus"
     volumes:
       - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
@@ -58,7 +58,7 @@ services:
     # ports:
     #   - '9090:9090'
     networks:
-      - netprobe-test  # Attach to the custom network
+      - netprobe  # Attach to the custom network
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
@@ -71,7 +71,7 @@ services:
     user: "0"
     restart: always
     image: "grafana/grafana-enterprise"
-    container_name: grafana-test
+    container_name: grafana
     volumes:
       - ./config/grafana/datasources/automatic.yml:/etc/grafana/provisioning/datasources/automatic.yml
       - ./config/grafana/dashboards/main.yml:/etc/grafana/provisioning/dashboards/main.yml
@@ -80,7 +80,7 @@ services:
     ports:
       - '3001:3000'
     networks:
-      - netprobe-test  # Attach to the custom network
+      - netprobe  # Attach to the custom network
 
   loki:
     restart: always
@@ -90,4 +90,4 @@ services:
       - "3100:3100"
     command: -config.file=/etc/loki/local-config.yaml
     networks:
-      - netprobe-test
+      - netprobe
