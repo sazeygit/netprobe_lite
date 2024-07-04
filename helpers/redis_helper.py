@@ -3,8 +3,8 @@
 # Functions to help read and write from Redis
 
 
-from config import Config_Redis
 import redis
+from config import Config_Redis
 import json
 
 class RedisConnect():
