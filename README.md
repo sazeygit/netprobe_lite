@@ -1,4 +1,6 @@
 # changes made by me
+
+## v0.1
 - renamed containers
 - added loki and coredns 
 - persistent storage for grafana, loki, prometheus (in ./config/)
@@ -6,7 +8,7 @@
 - uses /24 subnet
 - increased prometheus retention to 365 days
 - exposed loki/grafana/prometheus ports
-- change environment variable to change custom server port
+- added environment variable to change custom server port
 
 # Netprobe
 
@@ -116,7 +118,14 @@ To do so, modify this line in .env:
 DNS_NAMESERVER_4_IP="8.8.8.8" # Replace this IP with the DNS server you use at home
 ```
 
-Change 8.8.8.8 to the IP of the DNS server you use, then restart the application (docker compose down / docker compose up)
+Change 8.8.8.8 to the IP of the DNS server you use, then restart the application (docker compose down / docker compose up --detach)
+
+To modify the port on which your DNS server responds, modify this line in .env:
+```
+DNS_NAMESERVER_4_IP="53"
+```
+
+Change 53 to your desired port, then restart the application (docker compose down; docker compose up --detach)
 
 ### Use external Grafana
 
