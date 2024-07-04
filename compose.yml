@@ -82,12 +82,12 @@ services:
     networks:
       - netprobe-test  # Attach to the custom network
 
-  # loki:
-  #   restart: always
-  #   image: grafana/loki
-  #   container_name: loki
-  #   ports:
-  #     - "3100:3100"
-  #   command: -config.file=/etc/loki/local-config.yaml
-  #   networks:
-  #     - netprobe-test
+  loki:
+    restart: always
+    image: grafana/loki
+    container_name: loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - netprobe-test
