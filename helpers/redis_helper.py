@@ -2,7 +2,8 @@
 # 
 # Functions to help read and write from Redis
 
-
+from sys.path import append as append
+append('./')
 from config import Config_Redis
 import redis
 import json
