@@ -6,6 +6,7 @@
 - uses /24 subnet
 - increased prometheus retention to 365 days
 - exposed loki/grafana/prometheus ports
+- change environment variable to change custom server port
 
 # Netprobe
 
