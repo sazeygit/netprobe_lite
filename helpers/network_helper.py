@@ -50,7 +50,7 @@ class NetworkCollector(object): # Main network collection class
         server.append(nameserver[1])
 
         # custom port mapping
-        my_resolver.nameserver_ports = {"10.1.1.2": dns_port}
+        my_resolver.nameserver_ports = {"10.1.1.2": self.dns_port}
 
         try:
 
