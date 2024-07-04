@@ -16,7 +16,7 @@ class NetworkCollector(object): # Main network collection class
         self.dns_test_site = dns_test_site # Site used to test DNS response times
         self.nameservers = []
         self.nameservers = nameservers_external
-        self.dns_port = int(dns_port)
+        self.dns_port = dns_port
 
     def pingtest(self,count,site):
 
