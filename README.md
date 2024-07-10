@@ -1,4 +1,7 @@
-# changes made by me
+# Changes made in this fork
+## v0.11
+- exposed redis
+- updated .gitignore
 
 ## v0.1
 - renamed containers
