@@ -2,6 +2,7 @@
 config/
 ! config/__init__.py
 ! config/prometheus/prometheus.yml
+! config/redis/redis.conf
 
 tester.py
 
