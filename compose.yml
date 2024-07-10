@@ -55,8 +55,8 @@ services:
     volumes:
       - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./config/prometheus/prometheus-storage/_data:/prometheus
-    # ports:
-    #   - '9090:9090'
+    ports:
+      - '9090:9090'
     networks:
       - netprobe  # Attach to the custom network
     command:
@@ -78,7 +78,7 @@ services:
       - ./config/grafana/dashboards/netprobe.json:/var/lib/grafana/dashboards/netprobe.json
       - ./config/grafana/grafana-storage:/var/lib/grafana
     ports:
-      - '3001:3000'
+      - '3000:3000'
     networks:
       - netprobe  # Attach to the custom network
 
