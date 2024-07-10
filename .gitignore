@@ -1,4 +1,7 @@
 
+config/
+! config/__init__.py
+
 tester.py
 
 # Distribution / packaging
